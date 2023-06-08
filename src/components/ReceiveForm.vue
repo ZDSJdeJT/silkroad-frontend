@@ -8,14 +8,15 @@ import { Receive } from 'src/types';
 const isSubmitting = ref(false);
 
 const defaultForm = {
+  receiveCode: '',
+};
+const form = ref({
+  ...defaultForm,
   receiveCode: (() => {
     const url = new URL(window.location.href);
     const query = new URLSearchParams(url.search);
     return query.get('receive_code') ?? '';
   })(),
-};
-const form = ref({
-  ...defaultForm,
 });
 
 const isReceiveSuccessDialogShow = ref(false);

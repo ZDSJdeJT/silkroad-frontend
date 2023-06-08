@@ -57,7 +57,6 @@ export const receive = async (code: string) => {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        return jsonData;
       },
     };
   }
