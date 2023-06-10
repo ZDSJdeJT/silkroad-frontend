@@ -8,4 +8,7 @@ export default {
   deleteExpiredTextRecords: '删除过期文本',
   deleteExpiredFileRecords: '删除过期文件',
   deleteExpiredChunks: '删除过期文件切片',
+  receive: '接收',
+  cancel: '取消',
+  close: '关闭',
 };

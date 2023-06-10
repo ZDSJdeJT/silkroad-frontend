@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { receive } from 'src/api/v1';
-import ReceiveSuccessDialog from './ReceiveSuccessDialog.vue';
-import { Notify } from 'quasar';
+import { getRecordByCode } from 'src/api/v1';
+import ReceiveDialog from './ReceiveDialog.vue';
 import { Receive } from 'src/types';
 
 const isSubmitting = ref(false);
@@ -12,29 +11,17 @@ const defaultForm = {
 };
 const form = ref({
   ...defaultForm,
-  receiveCode: (() => {
-    const url = new URL(window.location.href);
-    const query = new URLSearchParams(url.search);
-    return query.get('receive_code') ?? '';
-  })(),
 });
 
 const isReceiveSuccessDialogShow = ref(false);
 
 const receiveData = ref<Receive | null>(null);
-const receiveText = ref('');
 
 const onSubmit = async () => {
   isSubmitting.value = true;
   try {
-    const { data, callback } = await receive(form.value.receiveCode);
-    Notify.create({
-      message: data.message,
-      position: 'top',
-      type: 'positive',
-    });
+    const data = await getRecordByCode(form.value.receiveCode);
     receiveData.value = data.result;
-    receiveText.value = callback();
     isReceiveSuccessDialogShow.value = true;
   } finally {
     isSubmitting.value = false;
@@ -46,13 +33,20 @@ const onReset = () => {
     ...defaultForm,
   };
 };
+
+const url = new URL(window.location.href);
+const query = new URLSearchParams(url.search);
+const receiveCode = query.get('receive_code');
+if (receiveCode) {
+  form.value.receiveCode = receiveCode;
+  onSubmit();
+}
 </script>
 
 <template>
-  <receive-success-dialog
+  <receive-dialog
     v-model:is-show="isReceiveSuccessDialogShow"
     :receive-data="receiveData as Receive"
-    :receive-text="receiveText"
   />
   <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
     <q-input

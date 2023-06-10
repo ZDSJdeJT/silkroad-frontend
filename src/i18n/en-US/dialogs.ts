@@ -1,6 +1,10 @@
 export default {
   receiveInfo: 'Receive Info',
   uploading: 'Uploading',
-  fileDownloadStartingMessage:
-    'Please wait, the file will begin downloading shortly',
+  type: 'Type',
+  file: 'File',
+  text: 'Text',
+  expireAt: 'Expire at',
+  remainingDownloadTimes: 'Remaining download times',
+  downloading: 'Downloading',
 };

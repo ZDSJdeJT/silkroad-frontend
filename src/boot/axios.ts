@@ -40,11 +40,10 @@ api.interceptors.response.use(
     // Do something with response data
     return response.data;
   },
-  (error) => {
+  async (error) => {
     // Do something with response error
-    if (error.response.data instanceof ArrayBuffer) {
-      const decoder = new TextDecoder('utf-8');
-      const text = decoder.decode(error.response.data);
+    if (error.response.data instanceof Blob) {
+      const text = await error.response.data.text();
       error.response.data = JSON.parse(text);
     }
     Notify.create({
