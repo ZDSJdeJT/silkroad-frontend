@@ -1,5 +1,7 @@
 # silkroad-frontend
 
+[English](https://github.com/ZDSJdeJT/silkroad-frontend/blob/main/README_en.md)
+
 这是一个在后端项目中使用的前端应用程序。它与 [后端项目](https://github.com/ZDSJdeJT/silkroad-backend) 配合使用，为用户提供一个完整的体验。
 
 ## 安装和使用
