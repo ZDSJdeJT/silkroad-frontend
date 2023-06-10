@@ -30,3 +30,22 @@ export const updateSetting = async (key: string, value: string | number) => {
   );
   return data;
 };
+
+export const deleteExpiredTextRecords = async () => {
+  const data: Response<null> = await api.delete(
+    `${prefix}/records/expired/text`
+  );
+  return data;
+};
+
+export const deleteExpiredFileRecords = async () => {
+  const data: Response<null> = await api.delete(
+    `${prefix}/records/expired/file`
+  );
+  return data;
+};
+
+export const deleteExpiredChunks = async () => {
+  const data: Response<null> = await api.delete(`${prefix}/expired/chunks`);
+  return data;
+};

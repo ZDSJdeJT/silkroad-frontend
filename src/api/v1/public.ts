@@ -65,6 +65,6 @@ export const receive = async (
 };
 
 export const deleteRecord = async (id: string) => {
-  const data: Response<null> = await api.delete(`${prefix}/record/${id}`);
+  const data: Response<null> = await api.delete(`${prefix}/records/${id}`);
   return data;
 };

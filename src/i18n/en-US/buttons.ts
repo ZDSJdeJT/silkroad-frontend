@@ -4,4 +4,8 @@ export default {
   reset: 'Reset',
   ok: 'OK',
   destroy: 'Destroy',
+  logout: 'Logout',
+  deleteExpiredTextRecords: 'Delete expired text records',
+  deleteExpiredFileRecords: 'Delete expired files',
+  deleteExpiredChunks: 'Delete expired file chunks',
 };
