@@ -1,4 +1,4 @@
-# silkroad-frontend
+# 丝绸之路-前端
 
 [English](https://github.com/ZDSJdeJT/silkroad-frontend/blob/main/README_en.md)
 
