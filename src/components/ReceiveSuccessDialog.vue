@@ -3,12 +3,13 @@ import { computed, ref } from 'vue';
 import { Receive } from 'src/types';
 import { defaultLanguage } from 'src/i18n';
 import RichTextEditor from './RichTextEditor.vue';
-import { deleteText, deleteFile } from 'src/api/v1';
+import { deleteRecord } from 'src/api/v1';
 import { Notify } from 'quasar';
 
 const props = defineProps<{
   isShow: boolean;
   receiveData?: Receive;
+  receiveText: string;
 }>();
 
 const emit = defineEmits(['update:is-show']);
@@ -21,10 +22,10 @@ const expireAt = computed(() => {
 
 const isSubmitting = ref(false);
 
-const onSubmit = async (id: string, isFile: boolean) => {
+const onSubmit = async (id: string) => {
   isSubmitting.value = true;
   try {
-    const data = await (isFile ? deleteFile : deleteText)(id);
+    const data = await deleteRecord(id);
     Notify.create({
       message: data.message,
       position: 'top',
@@ -41,14 +42,10 @@ const onSubmit = async (id: string, isFile: boolean) => {
   <q-dialog :model-value="isShow" persistent>
     <q-card flat bordered>
       <q-card-section>
-        <div v-if="receiveData!.isFile" class="text-h4">
+        <div v-if="!receiveText" class="text-h4">
           {{ $t('dialogs.fileDownloadStartingMessage') }}...
         </div>
-        <rich-text-editor
-          v-else
-          :text="receiveData!.content"
-          :readonly="true"
-        />
+        <rich-text-editor v-else :text="receiveText" :readonly="true" />
       </q-card-section>
       <q-card-section>
         <q-list bordered separator>
@@ -75,7 +72,7 @@ const onSubmit = async (id: string, isFile: boolean) => {
         </q-btn>
         <q-btn
           v-if="receiveData!.downloadTimes !== 1"
-          @click="onSubmit(receiveData!.id, receiveData!.isFile)"
+          @click="onSubmit(receiveData!.id)"
           :loading="isSubmitting"
           flat
           color="negative"

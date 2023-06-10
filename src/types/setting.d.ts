@@ -12,8 +12,9 @@ export interface Setting {
 }
 
 export interface PublicSettings {
-  maxDownloadTimes: number;
-  maxKeepDays: number;
-  maxUploadFileBytes: number;
-  maxUploadTextLength: number;
+  downloadTimes: number;
+  keepDays: number;
+  uploadFileBytes: number;
+  uploadTextLength: number;
+  uploadChunkBytes: number;
 }

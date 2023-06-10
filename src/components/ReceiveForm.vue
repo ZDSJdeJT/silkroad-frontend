@@ -22,6 +22,7 @@ const form = ref({
 const isReceiveSuccessDialogShow = ref(false);
 
 const receiveData = ref<Receive | null>(null);
+const receiveText = ref('');
 
 const onSubmit = async () => {
   isSubmitting.value = true;
@@ -33,10 +34,8 @@ const onSubmit = async () => {
       type: 'positive',
     });
     receiveData.value = data.result;
+    receiveText.value = callback();
     isReceiveSuccessDialogShow.value = true;
-    if (callback) {
-      callback();
-    }
   } finally {
     isSubmitting.value = false;
   }
@@ -53,6 +52,7 @@ const onReset = () => {
   <receive-success-dialog
     v-model:is-show="isReceiveSuccessDialogShow"
     :receive-data="receiveData as Receive"
+    :receive-text="receiveText"
   />
   <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
     <q-input

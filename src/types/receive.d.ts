@@ -1,8 +1,7 @@
 export interface Receive {
   id: string;
   code: string;
-  content: string;
-  isFile: boolean;
+  filename: string;
   downloadTimes: number;
   expireAt: string;
 }

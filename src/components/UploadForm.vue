@@ -69,19 +69,14 @@ const onSubmit = async () => {
     persistent: true,
     ok: false,
   });
-  const chunks = getFileChunks(form.value.file as File);
+  const chunks = getFileChunks(
+    form.value.file as File,
+    (publicSettings.value as PublicSettings).uploadChunkBytes
+  );
   const uuid = uuidv4();
   const promises: Array<Promise<void>> = [];
   for (let i = 0; i < chunks.length; i++) {
-    promises.push(
-      uploadChunk(
-        uuid,
-        chunks[i],
-        (form.value.file as File).size,
-        i,
-        chunks.length
-      )
-    );
+    promises.push(uploadChunk(uuid, i, chunks.length, chunks[i]));
   }
   let completedPromises = 0;
   const promiseRace = new Promise<void>((resolve, reject) => {
@@ -145,11 +140,11 @@ const onReset = () => {
       lazy-rules
       :rules="[
         (val) =>
-          (val >= 1 && val <= publicSettings!.maxKeepDays) ||
+          (val >= 1 && val <= publicSettings!.keepDays) ||
           $t('forms.rules.range', {
             label: $t('forms.labels.keepDays'),
             min: 1,
-            max: publicSettings!.maxKeepDays,
+            max: publicSettings!.keepDays,
           }),
       ]"
     />
@@ -168,11 +163,11 @@ const onReset = () => {
       lazy-rules
       :rules="[
         (val) =>
-          (val >= 1 && val <= publicSettings!.maxDownloadTimes) ||
+          (val >= 1 && val <= publicSettings!.downloadTimes) ||
           $t('forms.rules.range', {
             label: $t('forms.labels.downloadTimes'),
             min: 1,
-            max: publicSettings!.maxDownloadTimes,
+            max: publicSettings!.downloadTimes,
           }),
       ]"
     />
@@ -186,11 +181,11 @@ const onReset = () => {
       counter
       :rules="[
         (val) =>
-          (val.length >= 1 && val.length <= publicSettings!.maxUploadTextLength) ||
+          (val.length >= 1 && val.length <= publicSettings!.uploadTextLength) ||
           $t('forms.rules.rangeLength', {
             label: $t('forms.labels.text'),
             min: 1,
-            max: publicSettings!.maxUploadTextLength,
+            max: publicSettings!.uploadTextLength,
           }),
       ]"
     >
@@ -214,10 +209,10 @@ const onReset = () => {
             label: $t('forms.labels.file'),
           }),
         (val) =>
-          val.size <= publicSettings!.maxUploadFileBytes ||
+          val.size <= publicSettings!.uploadFileBytes ||
           `${$t('forms.rules.maxSize', {
             label: $t('forms.labels.file'),
-            max: publicSettings!.maxUploadFileBytes / 1048576,
+            max: publicSettings!.uploadFileBytes / 1048576,
           })} MB`,
       ]"
       counter

@@ -11,6 +11,9 @@ dependencies:
   axios:
     specifier: ^1.2.1
     version: 1.2.1
+  file-saver:
+    specifier: ^2.0.5
+    version: 2.0.5
   qrcode.vue:
     specifier: ^3.4.0
     version: 3.4.0(vue@3.3.4)
@@ -40,6 +43,9 @@ devDependencies:
   '@quasar/app-vite':
     specifier: ^1.0.0
     version: 1.0.0(quasar@2.8.0)(vue-router@4.0.12)(vue@3.3.4)
+  '@types/file-saver':
+    specifier: ^2.0.5
+    version: 2.0.5
   '@types/node':
     specifier: ^12.20.21
     version: 12.20.21
@@ -422,6 +428,10 @@ packages:
       '@types/express-serve-static-core': 4.17.35
       '@types/qs': 6.9.7
       '@types/serve-static': 1.15.1
+    dev: true
+
+  /@types/file-saver@2.0.5:
+    resolution: {integrity: sha512-zv9kNf3keYegP5oThGLaPk8E081DFDuwfqjtiTzm6PoxChdJ1raSuADf2YGCVIyrSynLrgc8JWv296s7Q7pQSQ==}
     dev: true
 
   /@types/json-schema@7.0.12:
@@ -2013,6 +2023,10 @@ packages:
     dependencies:
       flat-cache: 3.0.4
     dev: true
+
+  /file-saver@2.0.5:
+    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
+    dev: false
 
   /filelist@1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
