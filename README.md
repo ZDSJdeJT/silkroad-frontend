@@ -15,3 +15,7 @@
 ## 参与贡献
 
 如果您对该项目有任何建议或发现了问题，请在后端项目中创建一个 issue。我们非常感谢您的帮助和支持！
+
+## 许可证
+
+本项目是基于 LGPL-3.0 许可证开发的。有关详细信息，请参阅 [LICENSE](https://github.com/ZDSJdeJT/silkroad-frontend/blob/main/LICENSE) 文件。

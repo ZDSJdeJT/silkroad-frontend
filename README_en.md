@@ -13,3 +13,7 @@ Please install the backend project first and start the server according to its i
 ## Contributing
 
 If you have any suggestions or find any issues with this project, please create an issue in the backend project. We greatly appreciate your help and support!
+
+## License
+
+This project is developed under the LGPL-3.0 license. For more information, see the [LICENSE](https://github.com/ZDSJdeJT/silkroad-frontend/blob/main/LICENSE) file.
