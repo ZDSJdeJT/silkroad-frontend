@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Receive } from 'src/types';
+import { Record } from 'src/types';
 import { defaultLanguage } from 'src/i18n';
 import { deleteRecord, receiveText, receiveFile } from 'src/api/v1';
 import { Notify } from 'quasar';
@@ -15,13 +15,13 @@ const i18n = useI18n({ useScope: 'global' });
 
 const props = defineProps<{
   isShow: boolean;
-  receiveData?: Receive;
+  record?: Record;
 }>();
 
 const emit = defineEmits(['update:is-show']);
 
 const expireAt = computed(() => {
-  return new Date(props.receiveData?.expireAt as string).toLocaleString(
+  return new Date(props.record?.expireAt as string).toLocaleString(
     localStorage.language ?? defaultLanguage
   );
 });
@@ -31,8 +31,8 @@ const text = ref('');
 
 const isSubmittingReceive = ref(false);
 
-const onSubmitReceive = async (receiveData: Receive) => {
-  if (receiveData.filename) {
+const onSubmitReceive = async (record: Record) => {
+  if (record.filename) {
     emit('update:is-show', false);
     const dialog = $q.dialog({
       message: `${i18n.t('dialogs.downloading')}... 0%`,
@@ -42,8 +42,8 @@ const onSubmitReceive = async (receiveData: Receive) => {
     });
     try {
       await receiveFile(
-        receiveData.code,
-        receiveData.filename,
+        record.code,
+        record.filename,
         (progressEvent: AxiosProgressEvent) => {
           const progress = Math.round(
             (progressEvent.loaded * 100) /
@@ -54,6 +54,11 @@ const onSubmitReceive = async (receiveData: Receive) => {
           });
         }
       );
+      Notify.create({
+        message: i18n.t('notify.receiveSuccess'),
+        position: 'top',
+        type: 'positive',
+      });
     } finally {
       dialog.hide();
     }
@@ -61,7 +66,12 @@ const onSubmitReceive = async (receiveData: Receive) => {
   }
   try {
     isSubmittingReceive.value = true;
-    const data = await receiveText(receiveData.code);
+    const data = await receiveText(record.code);
+    Notify.create({
+      message: data.message,
+      position: 'top',
+      type: 'positive',
+    });
     text.value = data.result;
     isReceiveTextSuccessDialogShow.value = true;
   } finally {
@@ -81,9 +91,9 @@ const onSubmitDeleteRecord = async (id: string) => {
       position: 'top',
       type: 'positive',
     });
-    emit('update:is-show', false);
   } finally {
     isSubmittingDeleteRecord.value = false;
+    emit('update:is-show', false);
   }
 };
 </script>
@@ -95,14 +105,30 @@ const onSubmitDeleteRecord = async (id: string) => {
   />
   <q-dialog :model-value="isShow" persistent>
     <q-card flat bordered>
-      <q-card-section>
+      <q-card-section class="tw-text-2xl">
         <q-list bordered separator>
-          <q-item clickable v-ripple>
+          <template v-if="!!record!.filename">
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label overline>{{ $t('dialogs.type') }}</q-item-label>
+                <q-item-label>{{ $t('dialogs.file') }}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label overline>{{
+                  $t('dialogs.filename')
+                }}</q-item-label>
+                <q-item-label>
+                  {{ record!.filename }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+          <q-item v-else clickable v-ripple>
             <q-item-section>
               <q-item-label overline>{{ $t('dialogs.type') }}</q-item-label>
-              <q-item-label>{{
-                receiveData!.filename ? $t('dialogs.file') : $t('dialogs.text')
-              }}</q-item-label>
+              <q-item-label>{{ $t('dialogs.text') }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple>
@@ -117,7 +143,7 @@ const onSubmitDeleteRecord = async (id: string) => {
                 $t('dialogs.remainingDownloadTimes')
               }}</q-item-label>
               <q-item-label
-                >{{ receiveData!.downloadTimes === 0 ? '∞' : receiveData!.downloadTimes }}</q-item-label
+                >{{ record!.downloadTimes === 0 ? '∞' : record!.downloadTimes }}</q-item-label
               >
             </q-item-section>
           </q-item>
@@ -126,7 +152,7 @@ const onSubmitDeleteRecord = async (id: string) => {
       <q-separator />
       <q-card-actions>
         <q-btn
-          @click="onSubmitReceive(receiveData!)"
+          @click="onSubmitReceive(record!)"
           :loading="isSubmittingReceive"
           flat
           color="primary"
@@ -137,7 +163,7 @@ const onSubmitDeleteRecord = async (id: string) => {
           {{ $t('buttons.cancel') }}
         </q-btn>
         <q-btn
-          @click="onSubmitDeleteRecord(receiveData!.id)"
+          @click="onSubmitDeleteRecord(record!.id)"
           :loading="isSubmittingDeleteRecord"
           flat
           color="negative"

@@ -1,4 +1,4 @@
-export interface Receive {
+export interface Record {
   id: string;
   code: string;
   filename: string;

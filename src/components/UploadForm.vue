@@ -76,7 +76,15 @@ const onSubmit = async () => {
   const uuid = uuidv4();
   const promises: Array<Promise<void>> = [];
   for (let i = 0; i < chunks.length; i++) {
-    promises.push(uploadChunk(uuid, i, chunks.length, chunks[i]));
+    promises.push(
+      uploadChunk(
+        uuid,
+        (form.value.file as File).size,
+        i,
+        chunks.length,
+        chunks[i]
+      )
+    );
   }
   let completedPromises = 0;
   const promiseRace = new Promise<void>((resolve, reject) => {
@@ -91,7 +99,6 @@ const onSubmit = async () => {
             message: `${i18n.t('dialogs.uploading')}... ${progress}%`,
           });
           if (completedPromises === promises.length) {
-            dialog.hide();
             resolve();
           }
         })
@@ -115,6 +122,7 @@ const onSubmit = async () => {
     receiveCode.value = data.result;
     isUploadSuccessDialogShow.value = true;
   } finally {
+    dialog.hide();
     isSubmitting.value = false;
   }
 };

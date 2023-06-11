@@ -1,5 +1,5 @@
 import { api } from 'src/boot/axios';
-import { Response, PublicSettings, Text, File, Receive } from 'src/types';
+import { Response, PublicSettings, Text, File, Record } from 'src/types';
 import { saveAs } from 'file-saver';
 import { AxiosProgressEvent } from 'axios';
 
@@ -37,7 +37,7 @@ export const deleteRecord = async (id: string) => {
 };
 
 export const getRecordByCode = async (code: string) => {
-  const data: Response<Receive> = await api.get(`${prefix}/records/${code}`);
+  const data: Response<Record> = await api.get(`${prefix}/records/${code}`);
   return data;
 };
 

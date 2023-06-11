@@ -7,4 +7,5 @@ export default {
   expireAt: 'Expire at',
   remainingDownloadTimes: 'Remaining download times',
   downloading: 'Downloading',
+  filename: 'Filename',
 };

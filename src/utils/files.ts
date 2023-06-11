@@ -14,12 +14,14 @@ export const getFileChunks = (file: File, chunkBytes: number) => {
 
 export const uploadChunk = async (
   uuid: string,
+  size: number,
   index: number,
   total: number,
   chunk: Blob
 ) => {
   const formData = new FormData();
   formData.append('chunk', chunk);
+  formData.append('size', String(size));
   formData.append('index', String(index));
   formData.append('total', String(total));
   await uploadFile(uuid, formData);

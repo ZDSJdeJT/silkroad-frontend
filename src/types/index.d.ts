@@ -3,4 +3,4 @@ export * from './setting';
 export * from './system';
 export * from './admin';
 export * from './upload';
-export * from './receive';
+export * from './record';

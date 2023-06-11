@@ -7,4 +7,5 @@ export default {
   expireAt: '过期时间',
   remainingDownloadTimes: '剩余下载次数',
   downloading: '下载中',
+  filename: '文件名',
 };

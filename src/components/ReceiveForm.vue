@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { getRecordByCode } from 'src/api/v1';
 import ReceiveDialog from './ReceiveDialog.vue';
-import { Receive } from 'src/types';
+import { Record } from 'src/types';
 
 const isSubmitting = ref(false);
 
@@ -15,13 +15,13 @@ const form = ref({
 
 const isReceiveSuccessDialogShow = ref(false);
 
-const receiveData = ref<Receive | null>(null);
+const record = ref<Record | null>(null);
 
 const onSubmit = async () => {
   isSubmitting.value = true;
   try {
     const data = await getRecordByCode(form.value.receiveCode);
-    receiveData.value = data.result;
+    record.value = data.result;
     isReceiveSuccessDialogShow.value = true;
   } finally {
     isSubmitting.value = false;
@@ -46,7 +46,7 @@ if (receiveCode) {
 <template>
   <receive-dialog
     v-model:is-show="isReceiveSuccessDialogShow"
-    :receive-data="receiveData as Receive"
+    :record="record as Record"
   />
   <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
     <q-input
