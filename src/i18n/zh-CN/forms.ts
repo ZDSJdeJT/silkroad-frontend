@@ -1,6 +1,6 @@
 export default {
   labels: {
-    receiveCode: '取件码',
+    receiveCode: '接收码',
     keepDays: '保存天数',
     isDownloadTimesLimited: '是否限制下载次数',
     downloadTimes: '下载次数',
